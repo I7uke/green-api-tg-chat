@@ -1,0 +1,70 @@
+@use "../../../style/globalVariables.scss" as global;
+
+$colorTextButton: #ffffff;
+$panelBgColor: #17181cc2;
+
+.componentContainer {
+    background-color: $panelBgColor;
+    padding: 40px;
+    border-radius: 30px;
+    max-width: 700px;
+    width: 95%;
+    max-height: 95%;
+    overflow-y: auto;
+    box-sizing: border-box;
+    border: 1px solid #00000014;
+    z-index: 999;
+}
+
+.formTitleContainer {
+    text-align: center;
+    padding-bottom: 30px;
+    font-size: 26px;
+}
+
+.authButton {
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    color: $colorTextButton;
+    cursor: pointer;
+    text-decoration: none;
+    text-align: center;
+    border-radius: 6px;
+    $animationTime: 0.5s;
+    transition: background-color $animationTime, color $animationTime;
+    border: none;
+    font-size: 16px;
+    display: inline-block;
+    font-family: global.$font_familyPrimary;
+    background-color: global.$color_primary;
+
+    &:hover {
+        background-color: #5846a9;
+    }
+}
+
+.authButtonLoading {
+    width: 100%;
+    height: 39px;
+    background-color: #423a67;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.serverTextErrorContainer {
+    font-size: global.$font_sizePrimary;
+    color: global.$color_error;
+    padding: 10px 0 0 0;
+    animation: animationErrorOpacityIn 1s;
+    text-align: center;
+}
+
+@media screen and (max-width: 500px),
+screen and (max-height: 600px) {
+    .componentContainer {
+        padding: 20px 15px 40px 15px;
+    }
+}

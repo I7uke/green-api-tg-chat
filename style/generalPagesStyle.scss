@@ -1,0 +1,28 @@
+@use "./siteFonts.scss";
+@use "./globalVariables.scss" as global;
+
+html, body {
+  margin: 0;
+  padding: 0;
+}
+html {
+  color: global.$font_colorPrimary;
+  font-family: global.$font_familyPrimary;
+  font-size: global.$font_sizePrimary;
+}
+
+body {
+  background-color: global.$body_bgColor;
+}
+
+html > div[style] {
+  display: none !important;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: global.$color_primary;
+}

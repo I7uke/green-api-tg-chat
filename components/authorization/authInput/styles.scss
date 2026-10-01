@@ -1,0 +1,78 @@
+@use "../../../style/globalVariables.scss" as global;
+
+$bgColorInput: #2c2c2c;
+$colorPlaceholder: #a2acb4;
+$colorTextInput: #ffffff;
+
+@mixin mixinAuthInput($borderColor,$borderColorHover) {
+  background-color: $bgColorInput;
+  border: 2px solid $borderColor;
+
+  &:active,
+  &:focus-visible,
+  &:focus {
+    border-color: $borderColorHover;
+  }
+}
+
+@mixin mixinPlaceholder() {
+  color: $colorPlaceholder;
+  font-size: 16px;
+}
+
+.componentContainer {
+  padding-bottom: 20px;
+}
+
+.authInputNormal {
+  @include mixinAuthInput(transparent, global.$color_primary);
+}
+
+.authInputError {
+  @include mixinAuthInput(global.$color_error, #db3131);
+}
+
+.authInput {
+  width: 100%;
+  padding: 10px;
+  font-size: 18px;
+  color: $colorTextInput;
+  outline: none;
+  $animationTime: 0.5s;
+  transition: border-color $animationTime ease-in-out;
+  box-sizing: border-box;
+  border-radius: 10px;
+  font-family: global.$font_familyPrimary;
+
+  &::-webkit-input-placeholder {
+    @include mixinPlaceholder;
+  }
+
+  &::-moz-placeholder {
+    @include mixinPlaceholder;
+  }
+
+  &:-ms-input-placeholder {
+    @include mixinPlaceholder;
+  }
+
+  &:-moz-placeholder {
+    @include mixinPlaceholder;
+  }
+}
+
+.errorTextContainer {
+  font-size: global.$font_sizePrimary;
+  color: global.$color_error;
+  padding: 4px 0 0 0;
+  animation: animationErrorOpacityIn 1s;
+}
+
+@keyframes animationErrorOpacityIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

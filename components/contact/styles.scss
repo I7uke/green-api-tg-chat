@@ -1,0 +1,39 @@
+@use "../../style/globalVariables.scss" as global;
+
+.componentContainer {
+    background-color: #212121;
+    border-radius: 12px;
+    padding: 10px;
+    margin-bottom: 16px;
+    display: grid;
+    grid-template-columns: 1fr 60px;
+    gap: 6px;
+}
+
+.chatButtonContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.chatLink {
+    color: global.$font_colorPrimary;
+    text-decoration: none;
+    transition: color 0.3s ease;
+    font-size: 36px;
+
+    &:hover {
+        color: global.$color_primary;
+    }
+}
+
+.line {
+    word-break: break-word;
+    overflow-wrap: anywhere;
+    margin-bottom: 6px;
+}
+
+.caption {
+    color: #919191;
+}

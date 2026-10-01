@@ -1,0 +1,14 @@
+$colorPattern: #3399ff40;
+
+.imageBackground {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    inset: 0;
+    background-color: $colorPattern;
+    mask-image: url('../../../img/svg_base64/pattern_space.svg');
+    mask-repeat: repeat;
+    -webkit-mask-image: url('../../../img/svg_base64/pattern_space.svg');
+    -webkit-mask-repeat: repeat;
+    pointer-events: none;
+}

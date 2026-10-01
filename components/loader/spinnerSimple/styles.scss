@@ -1,0 +1,17 @@
+@use "../../../style/globalVariables.scss" as global;
+
+.componentContainer {
+    height: 0;
+    width: 0;
+    padding: 16px;
+    border: 6px solid #ccc;
+    border-right-color: global.$color_primary;
+    border-radius: 50%;
+    animation: rotate 1s infinite linear;
+}
+
+@keyframes rotate {
+    100% {
+        transform: rotate(360deg);
+    }
+}

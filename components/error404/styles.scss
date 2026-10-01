@@ -1,0 +1,32 @@
+@use "../../style/globalVariables.scss" as global;
+$fontSize: 26px;
+
+.componentContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.animationContainer {
+    min-width: 300px;
+    height: 65vh;
+    display: inline-block;
+}
+
+.textContainer {
+    text-align: center;
+    font-size: $fontSize;
+}
+
+.homeLink {
+    margin-top: 10px;
+    color: global.$color_primary;
+    font-size: $fontSize;
+    text-decoration: none;
+    display: inline-block;
+
+    &:hover {
+        text-decoration: underline;
+    }
+}

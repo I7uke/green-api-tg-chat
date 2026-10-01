@@ -1,0 +1,54 @@
+
+$dotSize: 30px;
+$speed: 0.33s;
+
+.componentContainer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    span {
+        display: inline-block;
+        width: $dotSize;
+        height: $dotSize;
+        border-radius: 100%;
+        background-color: #8774e1;
+        margin: 40px 8px;
+    }
+
+    span:nth-child(1) {
+        animation: animationBounce 1s ease-in-out infinite;
+    }
+
+    span:nth-child(2) {
+        animation: animationBounce 1s ease-in-out $speed infinite;
+    }
+
+    span:nth-child(3) {
+        animation: animationBounce 1s ease-in-out $speed * 2 infinite;
+    }
+}
+
+
+@keyframes animationBounce {
+    0%,
+    75%,
+    100% {
+        -webkit-transform: translateY(0);
+        -ms-transform: translateY(0);
+        -o-transform: translateY(0);
+        transform: translateY(0);
+    }
+
+    25% {
+        -webkit-transform: translateY(-$dotSize);
+        -ms-transform: translateY(-$dotSize);
+        -o-transform: translateY(-$dotSize);
+        transform: translateY(-$dotSize);
+    }
+}

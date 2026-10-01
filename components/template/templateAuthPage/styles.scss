@@ -1,0 +1,82 @@
+@use "../../../style/globalVariables.scss" as global;
+
+$panelBgColor: #17181cc2;
+$headerBgColor: #17181ced;
+$zIndexContent: 10;
+
+.componentContainer {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    align-items: center;
+}
+
+.header {
+    position: sticky;
+    top: 0;
+    left: 0;
+    background-color: $headerBgColor;
+    height: 40px;
+    width: 100%;
+    box-sizing: border-box;
+    z-index: $zIndexContent + 1;
+    padding: 0 16px;
+    display: grid;
+    grid-template-columns: 40px minmax(0, 1fr) 50px;
+    align-items: center;
+    flex: 0 0 48px;
+}
+
+.headerTitle {
+    min-width: 0;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+
+.linkBack {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    $linkSize: 30px;
+    width: $linkSize;
+    height: $linkSize;
+    border-radius: 50%;
+    font-size: 30px;
+    color: global.$font_colorPrimary;
+    transition: color 0.3s ease, background-color 0.3s ease;
+
+    &:hover {
+        background-color: #2b2b2b;
+        color: global.$color_primary;
+    }
+}
+
+.logOut {
+    color: global.$font_colorPrimary;
+    transition: color 0.3s ease;
+    cursor: pointer;
+
+    &:hover {
+        text-decoration: underline;
+        color: global.$color_primary;
+    }
+}
+
+.contentContainer {
+    z-index: $zIndexContent;
+    position: relative;
+    flex-grow: 1;
+    min-height: 0;
+    width: 100%;
+    max-width: 1000px;
+    background: $panelBgColor;
+    border-radius: 12px;
+    padding: 16px 10px 6px 10px;
+    box-sizing: border-box;
+    overflow-y: auto;
+}

@@ -1,0 +1,113 @@
+@use "../../style/globalVariables.scss" as global;
+
+$bgColorInput: #2c2c2c;
+$colorTextInput: #ffffff;
+
+.chatContainer {
+    display: grid;
+    grid-template-rows: minmax(0, 1fr) 100px;
+    height: 100%;
+}
+
+.chatMessages {
+    overflow-y: auto;
+    padding: 0 16px;
+}
+
+.inputContainer {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 55px;
+    padding: 10px 6px 0 6px;
+}
+
+.inputMessage {
+    width: 100%;
+    padding: 10px;
+    font-size: 18px;
+    color: $colorTextInput;
+    outline: none;
+    $animationTime: 0.5s;
+    transition: border-color $animationTime ease-in-out;
+    box-sizing: border-box;
+    border-radius: 10px;
+    font-family: global.$font_familyPrimary;
+    background-color: $bgColorInput;
+    border: 2px solid transparent;
+    height: 90px;
+    resize: none;
+    font-size: 14px;
+
+    &:active,
+    &:focus-visible,
+    &:focus {
+        border-color: global.$color_primary;
+    }
+}
+
+.buttonContainer {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.sendButton {
+    box-sizing: border-box;
+    color: global.$font_colorPrimary;
+    cursor: pointer;
+    text-decoration: none;
+    text-align: center;
+    border-radius: 50%;
+    $animationTime: 0.5s;
+    transition: background-color $animationTime;
+    border: none;
+    font-size: 20px;
+    display: inline-block;
+    font-family: global.$font_familyPrimary;
+    background-color: global.$color_primary;
+    $sendButtonSize: 45px;
+    width: $sendButtonSize;
+    height: $sendButtonSize;
+
+    &:hover {
+        background-color: #5846a9;
+    }
+}
+
+.chatMessageIncoming {
+    border-radius: 10px 10px 10px 0;
+    background-color: #505051;
+}
+
+.chatMessageOutgoing {
+    border-radius: 10px 10px 0 10px;
+    background-color: #543cbd;
+}
+
+.chatMessage {
+    padding: 10px;
+    display: inline-block;
+    max-width: 85%;
+    text-align: left;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+.messageContainer {
+    margin-bottom: 10px;
+}
+
+.messageContainerIncoming {
+    text-align: left;
+}
+
+.messageContainerOutgoing {
+    text-align: right;
+}
+
+.messageDateContainer {
+    text-align: right;
+    font-size: 12px;
+    color: #9f9f9f;
+    padding: 6px 0 0 0;
+}

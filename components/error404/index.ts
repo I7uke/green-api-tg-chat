@@ -1,0 +1,1 @@
+export {default as Eror404} from "./error404";
