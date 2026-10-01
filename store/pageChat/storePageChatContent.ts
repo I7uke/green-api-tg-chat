@@ -1,14 +1,17 @@
 import { apiDeleteNotification, apiPostChatHistory, apiReceiveNotification } from "../../api/api";
 import type { PageContent } from "../../models/pageContent";
 import { storeAuthData } from "../global/storeAuthData";
+import { StoreChatByPhone } from "./storeChatByPhone";
 import { StoreChatHistory } from "./storeChatHistory";
+import { StoreChatId } from "./storeChatId";
 
 export class StorePageChatContent implements PageContent {
-    private _chatId: string | null;
     private _abortControllerNotification: AbortController | null;
     private _isDispose: boolean;
 
+    public storeChatId: StoreChatId;
     public readonly storeChatHistory: StoreChatHistory;
+    public readonly storeChatByPhone: StoreChatByPhone;
 
     public dispose(): void {
         if (this._abortControllerNotification) {
@@ -21,7 +24,9 @@ export class StorePageChatContent implements PageContent {
 
     //#region serverRequest
     public serverRequestNotification() {
-        if (!this._chatId) {
+        const chatId: string | null = this.storeChatId.chatId;
+
+        if (!chatId) {
             return;
         }
 
@@ -29,7 +34,7 @@ export class StorePageChatContent implements PageContent {
             return;
         }
 
-        if(this._abortControllerNotification) {
+        if (this._abortControllerNotification) {
             this._abortControllerNotification.abort();
         }
 
@@ -40,45 +45,53 @@ export class StorePageChatContent implements PageContent {
         apiReceiveNotification(idInstance, apiTokenInstance, 50, this._abortControllerNotification.signal)
             .then((response) => {
                 const notification = response.data;
-                console.log(notification);
 
                 const receiptId = notification?.receiptId;
 
-                if(!receiptId) {
+                if (!receiptId) {
                     this.serverRequestNotification();
                     return;
                 }
 
                 apiDeleteNotification(idInstance, apiTokenInstance, receiptId)
-                    .finally(() => {
+                    .then(() => {
                         this.storeChatHistory.addNewMessage({
-                            chatId: this._chatId ?? '',
+                            chatId: chatId ?? '',
                             idMessage: notification.body.idMessage,
                             timestamp: notification.body.timestamp,
                             type: 'incoming',
                             typeMessage: notification.body.messageData?.typeMessage ?? 'textMessage',
                             textMessage: notification.body.messageData?.textMessageData?.textMessage ?? ''
                         });
+
                         this.serverRequestNotification();
+                    })
+                    .catch(() => {
+                        // Если сервис не доступен, чтобы не сыпались запросы
+                        setTimeout(() => {
+                            this.serverRequestNotification();
+                        }, 5000);
                     });
             })
             .catch(() => {
                 // Если сервис не доступен, чтобы не сыпались запросы
                 setTimeout(() => {
                     this.serverRequestNotification();
-                }, 5000)
+                }, 5000);
             });
     }
 
     public serverRequestChatHistory() {
-        if (!this._chatId) {
+        const chatId: string | null = this.storeChatId.chatId;
+
+        if (!chatId) {
             return;
         }
 
         const idInstance = storeAuthData.idInstance;
         const apiTokenInstance = storeAuthData.apiTokenInstance;
         this.storeChatHistory.isLoadingMessages = true;
-        apiPostChatHistory(idInstance, apiTokenInstance, this._chatId, 100)
+        apiPostChatHistory(idInstance, apiTokenInstance, chatId, 100)
             .then((response) => {
                 this.storeChatHistory.setMessages(response.data);
             })
@@ -90,10 +103,10 @@ export class StorePageChatContent implements PageContent {
 
 
     constructor(chatId: string | null) {
-        this._chatId = chatId;
         this._isDispose = false;
         this._abortControllerNotification = null;
-        this.storeChatHistory = new StoreChatHistory(chatId ?? '');
-
+        this.storeChatId = new StoreChatId(chatId);
+        this.storeChatHistory = new StoreChatHistory(this.storeChatId);
+        this.storeChatByPhone = new StoreChatByPhone(this.storeChatId);
     }
 }

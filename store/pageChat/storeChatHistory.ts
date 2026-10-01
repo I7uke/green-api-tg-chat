@@ -3,6 +3,7 @@ import { apiPostSendMessage, type TelegramMessage } from "../../api/api";
 import { StoreInputText } from "../storeInputText";
 import { type ValidationValueResult } from "../../models/validationValueResult";
 import { storeAuthData } from "../global/storeAuthData";
+import { StoreChatId } from "./storeChatId";
 
 function validationValue(value: string | null | undefined): ValidationValueResult<string> {
     if (typeof value !== 'string') {
@@ -31,7 +32,7 @@ export class StoreChatHistory {
     private _errorText: string | null;
     private _messagesId: Set<string>;
     private _lastUpdate: number;
-    private readonly _chatId: string;
+    private _storeChatId: StoreChatId;
 
     public storeInputText: StoreInputText;
 
@@ -105,19 +106,22 @@ export class StoreChatHistory {
         }
 
         this.storeInputText.startLoading();
+        this.storeInputText.isDisabled = true;
 
         const newMessageText = validMessage.validValue;
         const idInstance = storeAuthData.idInstance;
         const apiTokenInstance = storeAuthData.apiTokenInstance;
+        const chatId = this._storeChatId.chatId ?? '';
 
-        apiPostSendMessage(idInstance, apiTokenInstance, this._chatId, newMessageText)
+        apiPostSendMessage(idInstance, apiTokenInstance, chatId, newMessageText)
             .then((response) => {
                 this.storeInputText.resetValue();
                 this.storeInputText.resetError();
-                const idMessage = response.idMessage;
+                const idMessage = response.data.idMessage;
+                
 
                 const newMessage: TelegramMessage = {
-                    chatId: this._chatId,
+                    chatId: chatId,
                     idMessage: idMessage,
                     typeMessage: 'textMessage',
                     type: 'outgoing',
@@ -139,16 +143,12 @@ export class StoreChatHistory {
                 this.storeInputText.stopLoading();
                 this.storeInputText.isDisabled = false;
             });
-
-
-
-        this.storeInputText.isDisabled = true;
     }
 
-    constructor(chatId: string) {
+    constructor(storeChatId: StoreChatId) {
         this.eventSendMessage = this.eventSendMessage.bind(this);
 
-        this._chatId = chatId;
+        this._storeChatId = storeChatId;
         this._messagesList = [];
         this._isLoadingMessages = false;
         this._errorText = null;

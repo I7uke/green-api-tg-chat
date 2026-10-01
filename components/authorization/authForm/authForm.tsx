@@ -14,7 +14,6 @@ const SmartAuthInput = observer((props: WithStore<StoreInputText>) =>
     <AuthInput
         placeholder={props.store.placeholder}
         title={props.store.title}
-        type={props.store.inputType}
         eventChange={props.store.eventChangeValue}
         errorText={props.store.errorText}
         value={props.store.value}

@@ -109,7 +109,7 @@ export async function apiReceiveNotification(idInstance: string, apiTokenInstanc
 
 
 //#region deleteNotification
-export async function apiDeleteNotification(idInstance: string, apiTokenInstance: string, receiptId: number
+export function apiDeleteNotification(idInstance: string, apiTokenInstance: string, receiptId: number
 ) {
     return axios.delete<boolean>(
         `https://api.green-api.com/waInstance${idInstance}/deleteNotification/${apiTokenInstance}/${receiptId}`
@@ -122,16 +122,33 @@ export interface SendMessageResponse {
     readonly idMessage: string;
 }
 
-export async function apiPostSendMessage(idInstance: string, apiTokenInstance: string, chatId: string, message: string): Promise<SendMessageResponse> {
-
-
-    const response = await axios.post<SendMessageResponse>(`https://api.green-api.com/waInstance${idInstance}/sendMessage/${apiTokenInstance}`,
+export function apiPostSendMessage(idInstance: string, apiTokenInstance: string, chatId: string, message: string) {
+    return axios.post<SendMessageResponse>(`https://api.green-api.com/waInstance${idInstance}/sendMessage/${apiTokenInstance}`,
         {
             chatId: chatId,
             message: message
         }
     );
-
-    return response.data;
 }
+//#endregion
+
+//#region checkAccount
+
+export interface CheckAccountResponse {
+    readonly exist: boolean;
+    readonly chatId: string;
+    readonly username?: string;
+    readonly phoneNumber?: number;
+    readonly fromCache?: boolean;
+}
+
+export function apiPostCheckAccount(idInstance: string, apiTokenInstance: string, phoneNumber: number) {
+    return axios.post<CheckAccountResponse>(
+        `https://api.green-api.com/waInstance${idInstance}/checkAccount/${apiTokenInstance}`,
+        {
+            phoneNumber: phoneNumber,
+        }
+    );
+}
+
 //#endregion

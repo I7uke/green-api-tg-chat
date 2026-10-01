@@ -1,0 +1,27 @@
+@use "../../style/globalVariables.scss" as global;
+
+.componentContainer {
+    padding: 0 0 20px 0;
+}
+
+.linkButton {
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    color: global.$font_colorPrimary;
+    cursor: pointer;
+    text-decoration: none;
+    text-align: center;
+    border-radius: 6px;
+    $animationTime: 0.5s;
+    transition: background-color $animationTime;
+    border: none;
+    font-size: 16px;
+    display: inline-block;
+    font-family: global.$font_familyPrimary;
+    background-color: global.$color_primary;
+
+    &:hover {
+        background-color: #5846a9;
+    }
+}

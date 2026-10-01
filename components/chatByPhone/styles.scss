@@ -1,0 +1,67 @@
+@use "../../style/globalVariables.scss" as global;
+
+$bgColorInput: #2c2c2c;
+
+.componentContainer {
+    padding: 0 0 20px 0;
+}
+
+.phoneTitleContainer {
+    padding: 0 0 6px 0;
+}
+
+.buttonContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 0;
+}
+
+.buttonPhone {
+    padding: 10px;
+    box-sizing: border-box;
+    color: global.$font_colorPrimary;
+    cursor: pointer;
+    text-decoration: none;
+    text-align: center;
+    border-radius: 6px;
+    $animationTime: 0.5s;
+    transition: background-color $animationTime;
+    border: none;
+    font-size: 16px;
+    display: inline-block;
+    font-family: global.$font_familyPrimary;
+    background-color: global.$color_primary;
+    user-select: none;
+
+    &:hover {
+        background-color: #5846a9;
+    }
+}
+
+.inputPhone {
+    width: 100%;
+    padding: 10px;
+    font-size: 18px;
+    color: global.$font_colorPrimary;
+    outline: none;
+    $animationTime: 0.5s;
+    transition: border-color $animationTime ease-in-out;
+    box-sizing: border-box;
+    border-radius: 10px;
+    font-family: global.$font_familyPrimary;
+    background-color: $bgColorInput;
+    border: 2px solid transparent;
+
+    &:active,
+    &:focus-visible,
+    &:focus {
+        border-color: global.$color_primary;
+    }
+}
+
+.errorText {
+    text-align: center;
+    padding: 10px 0 0 0;
+    color: global.$color_error;
+}

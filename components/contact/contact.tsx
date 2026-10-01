@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
 import { type TelegramChat } from "../../api/api";
 import SvgImageComments from '../../img/svg_ico/comments.svg';
-import styles from "./styles.scss";
 import { sitePages } from "../../staticData/sitePages";
+import styles from "./styles.scss";
 
 interface PropsContact {
     readonly contact: TelegramChat;

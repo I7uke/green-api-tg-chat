@@ -9,9 +9,11 @@ import { useAuthRedirect } from "../hooks/useAuthRedirect";
 import { storeAuthData } from "../store/global/storeAuthData";
 import { type WithStore } from "../models/withStore";
 import { StorePageChatContent } from "../store/pageChat/storePageChatContent";
+import { ChatByPhone } from "../components/chatByPhone";
 
 const SmartChat = observer((props: WithStore<StorePageChatContent>) => {
   useEffect(() => {
+    props.store.serverRequestChatHistory();
     props.store.serverRequestNotification();
   }, []);
 
@@ -33,7 +35,11 @@ function PageChat(props: PageProps<StorePageChat>) {
 
   const storeContent = props.storePage.contentPage.store;
 
-  return (<SmartChat store={storeContent} />);
+  if (storeContent.storeChatId.chatId) {
+    return (<SmartChat store={storeContent} />);
+  }
+
+  return(<ChatByPhone store={storeContent.storeChatByPhone}/>)
 }
 
 export default observer(PageChat);

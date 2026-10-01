@@ -10,7 +10,6 @@ export class StorePageChat extends AbstractStorePage {
         const chatIdParam = parser.get('chatId');
         const chatId = chatIdParam ? chatIdParam : null;
         this.contentPage.store = new StorePageChatContent(chatId);
-        this.contentPage.store.serverRequestChatHistory();
     }
 
     protected override _pageExit(): void {

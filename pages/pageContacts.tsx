@@ -8,6 +8,8 @@ import { Contact } from "../components/contact";
 import { LoaderPage } from "../components/loader";
 import { useAuthRedirect } from "../hooks/useAuthRedirect";
 import { storeAuthData } from "../store/global/storeAuthData";
+import { LinkButton } from "../components/linkButton";
+import { sitePages } from "../staticData/sitePages";
 
 const SmartContactsList = observer((props: WithStore<StoreChats>) =>
   <>
@@ -29,6 +31,9 @@ function PageContacts(props: PageProps<StorePageContacts>) {
 
   return (
     <div>
+      <div>
+        <LinkButton link={sitePages.chat} text={'По номеру телефона'} />
+      </div>
       <SmartContactsList store={props.storePage.contentPage.storeChats} />
     </div>
   );
