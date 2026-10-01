@@ -5,7 +5,7 @@ $colorTextInput: #ffffff;
 
 .chatContainer {
     display: grid;
-    grid-template-rows: minmax(0, 1fr) 100px;
+    grid-template-rows: minmax(0, 1fr) 130px;
     height: 100%;
 }
 
@@ -110,4 +110,11 @@ $colorTextInput: #ffffff;
     font-size: 12px;
     color: #9f9f9f;
     padding: 6px 0 0 0;
+}
+
+.errorText {
+    font-size: 14px;
+    padding: 0 0 6px 0;
+    color:global.$color_error;
+    text-align: center;
 }

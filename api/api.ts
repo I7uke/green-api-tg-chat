@@ -108,9 +108,30 @@ export async function apiReceiveNotification(idInstance: string, apiTokenInstanc
 //#endregion
 
 
+//#region deleteNotification
 export async function apiDeleteNotification(idInstance: string, apiTokenInstance: string, receiptId: number
 ) {
     return axios.delete<boolean>(
         `https://api.green-api.com/waInstance${idInstance}/deleteNotification/${apiTokenInstance}/${receiptId}`
     );
 }
+//#endregion
+
+//#region sendMessage
+export interface SendMessageResponse {
+    readonly idMessage: string;
+}
+
+export async function apiPostSendMessage(idInstance: string, apiTokenInstance: string, chatId: string, message: string): Promise<SendMessageResponse> {
+
+
+    const response = await axios.post<SendMessageResponse>(`https://api.green-api.com/waInstance${idInstance}/sendMessage/${apiTokenInstance}`,
+        {
+            chatId: chatId,
+            message: message
+        }
+    );
+
+    return response.data;
+}
+//#endregion

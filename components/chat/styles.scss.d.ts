@@ -5,6 +5,7 @@ export type Styles = {
   'chatMessageIncoming': string;
   'chatMessageOutgoing': string;
   'chatMessages': string;
+  'errorText': string;
   'inputContainer': string;
   'inputMessage': string;
   'messageContainer': string;

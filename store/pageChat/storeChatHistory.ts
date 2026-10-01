@@ -1,16 +1,43 @@
 import { computed, makeObservable, observableRef, runInAction } from "mobx";
-import { type TelegramMessage } from "../../api/api";
+import { apiPostSendMessage, type TelegramMessage } from "../../api/api";
+import { StoreInputText } from "../storeInputText";
+import { type ValidationValueResult } from "../../models/validationValueResult";
+import { storeAuthData } from "../global/storeAuthData";
+
+function validationValue(value: string | null | undefined): ValidationValueResult<string> {
+    if (typeof value !== 'string') {
+        return ({
+            errorText: 'Некорректный ввод',
+            validValue: null
+        })
+    }
+
+    if (!value) {
+        return ({
+            errorText: 'Поле не может быть пустым',
+            validValue: null
+        })
+    }
+
+    return ({
+        errorText: null,
+        validValue: value
+    });
+}
 
 export class StoreChatHistory {
-    private _messages: TelegramMessage[];
-    private _isLoading: boolean;
+    private _messagesList: TelegramMessage[];
+    private _isLoadingMessages: boolean;
     private _errorText: string | null;
     private _messagesId: Set<string>;
     private _lastUpdate: number;
+    private readonly _chatId: string;
 
-    //#region messages
-    get messages() {
-        return this._messages;
+    public storeInputText: StoreInputText;
+
+    //#region messagesList
+    get messagesList() {
+        return this._messagesList;
     }
 
     public setMessages(value: TelegramMessage[]) {
@@ -21,7 +48,7 @@ export class StoreChatHistory {
         this._messagesId = new Set(messagesId);
 
         runInAction(() => {
-            this._messages = reverse;
+            this._messagesList = reverse;
             this._lastUpdate = +new Date();
         });
     }
@@ -32,10 +59,10 @@ export class StoreChatHistory {
             return;
         }
 
-        const copyMessagesList = [...this._messages, newMessage];
+        const copyMessagesList = [...this._messagesList, newMessage];
 
         runInAction(() => {
-            this._messages = copyMessagesList;
+            this._messagesList = copyMessagesList;
             this._lastUpdate = +new Date();
         });
     }
@@ -46,14 +73,14 @@ export class StoreChatHistory {
 
     //#endregion
 
-    //#region isLoading
-    get isLoading() {
-        return this._isLoading;
+    //#region isLoadingMessages
+    get isLoadingMessages() {
+        return this._isLoadingMessages;
     }
 
-    set isLoading(value: boolean) {
+    set isLoadingMessages(value: boolean) {
         runInAction(() => {
-            this._isLoading = value;
+            this._isLoadingMessages = value;
         });
     }
     //#endregion
@@ -70,25 +97,80 @@ export class StoreChatHistory {
     }
     //#endregion
 
-    constructor() {
-        this._messages = [];
-        this._isLoading = false;
+    public eventSendMessage() {
+        const validMessage = this.storeInputText.validation();
+
+        if (validMessage.errorText !== null) {
+            return;
+        }
+
+        this.storeInputText.startLoading();
+
+        const newMessageText = validMessage.validValue;
+        const idInstance = storeAuthData.idInstance;
+        const apiTokenInstance = storeAuthData.apiTokenInstance;
+
+        apiPostSendMessage(idInstance, apiTokenInstance, this._chatId, newMessageText)
+            .then((response) => {
+                this.storeInputText.resetValue();
+                this.storeInputText.resetError();
+                const idMessage = response.idMessage;
+
+                const newMessage: TelegramMessage = {
+                    chatId: this._chatId,
+                    idMessage: idMessage,
+                    typeMessage: 'textMessage',
+                    type: 'outgoing',
+                    textMessage: newMessageText,
+                    timestamp: Math.floor(+new Date() / 1000)
+                }
+
+                const copyMessagesList = [...this._messagesList, newMessage];
+
+                runInAction(() => {
+                    this._messagesList = copyMessagesList;
+                    this._lastUpdate = +new Date();
+                });
+            })
+            .catch(() => {
+                this.storeInputText.setError('При отправке сообщения возникла ошибка');
+            })
+            .finally(() => {
+                this.storeInputText.stopLoading();
+                this.storeInputText.isDisabled = false;
+            });
+
+
+
+        this.storeInputText.isDisabled = true;
+    }
+
+    constructor(chatId: string) {
+        this.eventSendMessage = this.eventSendMessage.bind(this);
+
+        this._chatId = chatId;
+        this._messagesList = [];
+        this._isLoadingMessages = false;
         this._errorText = null;
         this._messagesId = new Set();
-        this._lastUpdate = +new Date(); 
+        this._lastUpdate = +new Date();
+        this.storeInputText = new StoreInputText({
+            validValue: validationValue,
+            isResetErrorOnChangeValue: true
+        });
 
         makeObservable<this,
-            '_messages'
-            | '_isLoading'
+            '_messagesList'
+            | '_isLoadingMessages'
             | '_errorText'
             | '_lastUpdate'
         >(this, {
-            _messages: observableRef,
-            _isLoading: observableRef,
+            _messagesList: observableRef,
+            _isLoadingMessages: observableRef,
             _errorText: observableRef,
             _lastUpdate: observableRef,
-            messages: computed,
-            isLoading: computed,
+            messagesList: computed,
+            isLoadingMessages: computed,
             errorText: computed,
             lastUpdate: computed
         });

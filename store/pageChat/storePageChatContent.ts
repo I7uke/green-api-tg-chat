@@ -63,7 +63,10 @@ export class StorePageChatContent implements PageContent {
                     });
             })
             .catch(() => {
-                this.serverRequestNotification();
+                // Если сервис не доступен, чтобы не сыпались запросы
+                setTimeout(() => {
+                    this.serverRequestNotification();
+                }, 5000)
             });
     }
 
@@ -74,14 +77,13 @@ export class StorePageChatContent implements PageContent {
 
         const idInstance = storeAuthData.idInstance;
         const apiTokenInstance = storeAuthData.apiTokenInstance;
-        this.storeChatHistory.isLoading = true;
+        this.storeChatHistory.isLoadingMessages = true;
         apiPostChatHistory(idInstance, apiTokenInstance, this._chatId, 100)
             .then((response) => {
-                console.log(response.data)
                 this.storeChatHistory.setMessages(response.data);
             })
             .finally(() => {
-                this.storeChatHistory.isLoading = false;
+                this.storeChatHistory.isLoadingMessages = false;
             });
     }
     //#endregion
@@ -91,7 +93,7 @@ export class StorePageChatContent implements PageContent {
         this._chatId = chatId;
         this._isDispose = false;
         this._abortControllerNotification = null;
-        this.storeChatHistory = new StoreChatHistory();
+        this.storeChatHistory = new StoreChatHistory(chatId ?? '');
 
     }
 }

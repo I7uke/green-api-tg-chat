@@ -15,11 +15,11 @@ const SmartChat = observer((props: WithStore<StorePageChatContent>) => {
     props.store.serverRequestNotification();
   }, []);
 
-    if (props.store.storeChatHistory.isLoading) {
+  if (props.store.storeChatHistory.isLoadingMessages) {
     return (<LoaderPage />)
   }
 
-  return( <Chat store={props.store.storeChatHistory}/>);
+  return (<Chat store={props.store.storeChatHistory} />);
 });
 
 
@@ -33,7 +33,7 @@ function PageChat(props: PageProps<StorePageChat>) {
 
   const storeContent = props.storePage.contentPage.store;
 
-  return (<SmartChat store={storeContent}/>);
+  return (<SmartChat store={storeContent} />);
 }
 
 export default observer(PageChat);

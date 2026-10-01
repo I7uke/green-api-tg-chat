@@ -1,10 +1,12 @@
+import { useEffect, useRef } from 'react';
 import { observer } from 'mobx-react';
 import { type TelegramMessage } from '../../api/api';
 import SvgImagePaperPlane from '../../img/svg_ico/paperPlane.svg';
 import { type WithStore } from '../../models/withStore';
 import { StoreChatHistory } from '../../store/pageChat/storeChatHistory';
+import { SpinnerSimple } from '../loader';
+import { StoreInputText } from '../../store/storeInputText';
 import styles from './styles.scss';
-import { useEffect, useRef } from 'react';
 
 const TEXT_BUTTON_SEND = 'Отправить';
 
@@ -47,7 +49,7 @@ function Message(props: MessageProps) {
 
 const SmartMessagesList = observer((props: WithStore<StoreChatHistory>) => {
     const chatMessagesRef = useRef<HTMLDivElement>(null);
-        useEffect(() => {
+    useEffect(() => {
         const element = chatMessagesRef.current;
 
         if (element) {
@@ -57,8 +59,34 @@ const SmartMessagesList = observer((props: WithStore<StoreChatHistory>) => {
 
     return (
         <div ref={chatMessagesRef} className={styles.chatMessages}>
-            {props.store.messages.map((m => <Message key={m.idMessage} message={m} />))}
+            {props.store.messagesList.map((m => <Message key={m.idMessage} message={m} />))}
         </div>
+    );
+});
+
+const SmartInput = observer((props: WithStore<StoreInputText>) =>
+    <div>
+        <textarea className={styles.inputMessage}
+            disabled={props.store.isDisabled}
+            value={props.store.value}
+            onChange={props.store.eventChangeValue}
+        />
+        { props.store.errorText ?  <div className={styles.errorText}>{props.store.errorText}</div> : null }
+    </div>
+);
+
+const SmartButton = observer((props: WithStore<StoreChatHistory>) => {
+    if (props.store.storeInputText.isLoading) {
+        return (<SpinnerSimple />);
+    }
+
+    return (
+        <button
+            onClick={props.store.eventSendMessage}
+            title={TEXT_BUTTON_SEND}
+            className={styles.sendButton}>
+            <SvgImagePaperPlane />
+        </button>
     );
 });
 
@@ -67,11 +95,9 @@ export default function Chat(props: WithStore<StoreChatHistory>) {
         <div className={styles.chatContainer}>
             <SmartMessagesList store={props.store} />
             <div className={styles.inputContainer}>
-                <textarea className={styles.inputMessage} />
+                <SmartInput store={props.store.storeInputText} />
                 <div className={styles.buttonContainer}>
-                    <button title={TEXT_BUTTON_SEND} className={styles.sendButton}>
-                        <SvgImagePaperPlane />
-                    </button>
+                    <SmartButton store={props.store} />
                 </div>
             </div>
         </div>

@@ -27,6 +27,7 @@ export class StoreInputText {
     private _isDisabled: boolean | undefined;
     private readonly _inputType: InputType | undefined;
     private readonly _title: string | undefined;
+    private _isLoading: boolean;
 
     public eventChangeValue(e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) {
         const newValue = e.currentTarget.value;
@@ -51,6 +52,12 @@ export class StoreInputText {
         });
     }
 
+    public setError(value: string) {
+        runInAction(() => {
+            this._errorText = value;
+        });
+    }
+
     public validation(): ValidationValueResult<string> {
         if (typeof this._validValue !== 'function') {
             throw new Error('Validator not set');
@@ -67,9 +74,27 @@ export class StoreInputText {
         return validResult;
     }
 
+    public resetValue() {
+        runInAction(() => {
+            this._value = '';
+        });
+    }
+
     public dispose() {
         this._validValue = null;
         this._eventGetChangeValue = null;
+    }
+
+    public startLoading() {
+        runInAction(() => {
+            this._isLoading = true;
+        });
+    }
+
+    stopLoading() {
+        runInAction(() => {
+            this._isLoading = false;
+        });
     }
 
     get value() {
@@ -96,6 +121,10 @@ export class StoreInputText {
         return this._title;
     }
 
+    get isLoading() {
+        return this._isLoading;
+    }
+
     set isDisabled(value: boolean | undefined) {
         runInAction(() => {
             this._isDisabled = value;
@@ -114,17 +143,21 @@ export class StoreInputText {
         this._isDisabled = initData.isDisabled;
         this._inputType = initData.inputType;
         this._title = initData.title;
+        this._isLoading = false;
 
         makeObservable<this,
             | '_value'
             | '_errorText'
-            | '_isDisabled'>(this, {
+            | '_isDisabled'
+            | '_isLoading'>(this, {
                 _value: observableRef,
                 _errorText: observableRef,
                 _isDisabled: observableRef,
+                _isLoading: observableRef,
                 errorText: computed,
                 value: computed,
-                isDisabled: computed
+                isDisabled: computed,
+                isLoading: computed
             });
     }
 }
