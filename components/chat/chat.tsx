@@ -1,11 +1,11 @@
 import { useEffect, useRef } from 'react';
 import { observer } from 'mobx-react';
 import { type TelegramMessage } from '../../api/api';
-import SvgImagePaperPlane from '../../img/svg_ico/paperPlane.svg';
 import { type WithStore } from '../../models/withStore';
 import { StoreChatHistory } from '../../store/pageChat/storeChatHistory';
 import { SpinnerSimple } from '../loader';
 import { StoreInputText } from '../../store/storeInputText';
+import SvgImagePaperPlane from '../../img/svg_ico/paperPlane.svg';
 import styles from './styles.scss';
 
 const TEXT_BUTTON_SEND = 'Отправить';

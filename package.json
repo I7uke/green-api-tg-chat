@@ -1,7 +1,7 @@
 {
-  "name": "react-empty-project",
+  "name": "green-api-tg-chat",
   "version": "0.0.1",
-  "description": "react-empty-project",
+  "description": "green-api-tg-chat",
   "main": "webpack.config.ts",
   "sideEffects": false,
   "scripts": {
@@ -12,7 +12,7 @@
     "run-http-server": "serve -s ./build"
   },
   "keywords": [
-    "react-empty-project"
+    "green-api-tg-chat"
   ],
   "author": "Ivan",
   "license": "MIT",

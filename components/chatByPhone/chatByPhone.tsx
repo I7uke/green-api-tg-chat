@@ -2,10 +2,10 @@ import { observer } from "mobx-react";
 import { type WithStore } from "../../models/withStore";
 import { StoreChatByPhone } from "../../store/pageChat/storeChatByPhone";
 import { StoreInputText } from "../../store/storeInputText";
-import styles from "./styles.scss";
 import { SpinnerSimple } from "../loader";
+import styles from "./styles.scss";
 
-const TEXT_CAPTION: string = 'Введите номер телефона';
+const TEXT_CAPTION: string = 'Введите номер телефона:';
 const TEXT_BUTTON: string = 'Перейти в чат';
 
 const SmartInputPhone = observer((props: WithStore<StoreInputText>) =>

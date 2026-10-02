@@ -3,9 +3,8 @@ import lottieAnimationErrorPage404 from '../../lottieAnimation/errorPage404.json
 import { useLayoutEffect } from "react";
 import { Link } from "react-router-dom";
 import { observer } from "mobx-react";
-import styles from './styles.scss';
-import type { WithStore } from "../../models/withStore";
 import { storeCurrentPageInfo } from "../../store/global/storeCurrentPageInfo";
+import styles from './styles.scss';
 
 const TEXT_PAGE_NOT_FOUND: string = 'Страница не найдена';
 const TEXT_LINK_GO_HOME: string = 'Главная';

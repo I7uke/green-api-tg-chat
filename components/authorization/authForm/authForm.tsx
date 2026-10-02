@@ -2,10 +2,10 @@ import { observer } from 'mobx-react';
 import type { WithStore } from '../../../models/withStore';
 import { StoreInputText } from '../../../store/storeInputText';
 import AuthInput from '../authInput/authInput';
-import styles from './styles.scss';
 import { StorePageAuthContent } from '../../../store/pageAuthorization/storePageAuthContent';
 import { StoreErrorText } from '../../../store/storeErrorText';
 import { SpinnerSimple } from '../../loader';
+import styles from './styles.scss';
 
 const TEXT_TITLE_FORM = 'Авторизация';
 const TEXT_BUTTON = 'Войти';

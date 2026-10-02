@@ -71,14 +71,6 @@ export default (env, argv) => {
                         filename: 'svg/[hash][ext][query]'
                     }
                 },
-                // {
-                //     test: /\.json$/,
-                //     exclude: /node_modules/,
-                //     type: 'asset/resource',
-                //     generator: {
-                //         filename: 'lottie/[name][ext]',
-                //     },
-                // },
                 // Для стилей scss
                 {
                     test: /\.scss$/,

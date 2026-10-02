@@ -1,9 +1,9 @@
 import { Link, Outlet } from "react-router-dom";
 import { storeCurrentPageInfo } from "../../../store/global/storeCurrentPageInfo";
 import { observer } from "mobx-react";
-import styles from "./styles.scss";
 import SvgImageAngleLeft from '../../../img/svg_ico/angleLeft.svg';
 import { storeAuthData } from "../../../store/global/storeAuthData";
+import styles from "./styles.scss";
 
 const TEXT_BUTTON_LOGOUT = 'Выход';
 const TEXT_LINK_BACK = 'Назад';
